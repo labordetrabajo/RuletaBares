@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ruleta de Premios</title>
+    <link rel="stylesheet" href="style/style.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet"/>
+</head>
+<body>
+    <!-- Logos superiores -->
+    <div class="logos-superiores">
+        <img src="./img/Beefeater-01.png" alt="Logo Izquierdo" class="logo-superior"/>
+        <img src="./img/Absolut_Logotype_OriginalBlue.png" alt="Logo Central" class="logo-superior logo-central"/>
+        <img src="./img/Brighton-01.png" alt="Logo Derecho" class="logo-superior"/>
+    </div>
+
+    <!-- Contenedor central con ruleta e imágenes laterales -->
+    <div class="ruleta-wrapper">
+        <img src="./img/CR-Wordmark-stack-black.png" alt="Imagen Izquierda" class="logo-lateral izquierdo"/>
+        
+        <div class="ruleta-container">
+            <canvas id="ruleta" class="ruleta"></canvas>
+            <div class="flecha"></div>
+            <button id="girarBtn" onclick="girarRuleta()">Girar</button>
+        </div>
+
+        <img src="./img/BAL_CoreLogo_Pos_RGB.png" alt="Imagen Derecha" class="logo-lateral derecho"/>
+    </div>
+
+    <div id="resultado" class="resultado">
+        ¡¡ 🎁 Presiona Girar para ganar Premios 🎁!!
+    </div>
+
+    <script src="./js/ruleta.js"></script>
+</body>
+</html>
