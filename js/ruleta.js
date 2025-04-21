@@ -12,7 +12,7 @@
             { nombre: "Casi\u2006\u2006Casi" },        // índice 3  cuarto continente
             { nombre: "Una\u2006\u2006Vuelta Mas" },        // índice 4
             { nombre: "En\u2006\u2006La\u2006\u2006Pera Consumición S/C" },             // índice 5
-            { nombre: "A\u2006\u2006Bailar\u2006\u2006All The\u2006\u2006Night🎶 " }         // índice 6
+            { nombre: "A\u2006\u2006Bailar\u2006\u2006All The\u2006\u2006Night " }         // índice 6
         ];
         const colores = ["#2C3E50", "#E74C3C", "#F39C12", "#0e1a49", "#1ABC9C", "#9B59B6", "#E91E63"];
 
@@ -72,6 +72,8 @@
         function girarRuleta() {
             if (animacionEnCurso) return;  // Previene que se ejecute varias veces
             animacionEnCurso = true;
+            document.getElementById("audioGiro").play();
+
         
             girarBtn.disabled = true; // Deshabilitar el botón mientras gira
             
@@ -118,6 +120,12 @@
                     canvas.style.transform = `rotate(${anguloActual % 360}deg)`;
                     girarBtn.disabled = false;
                     animacionEnCurso = false; // Vuelve a habilitar la animación
+                    
+                       // 👉 Acá podés agregar estas líneas para detener el audio
+                    document.getElementById("audioGiro").pause();
+                    document.getElementById("audioGiro").currentTime = 0;
+                    
+                    
                 }, 100);
             }, 3000);
         }
@@ -141,3 +149,8 @@
         
 
         dibujarRuleta();
+
+        window.addEventListener("load", () => {
+            canvas.style.transition = "transform 0s";
+            canvas.style.transform = "rotate(0.1deg)";
+        });
