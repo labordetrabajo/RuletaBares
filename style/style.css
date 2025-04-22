@@ -23,15 +23,22 @@ body {
     transform: translateY(120px);
 }
 
-.logo-superior {
+.logo-superior-derecho {
     max-width: 130px;
     height: auto;
+    transform: translate(-120px, -140px); /* Mueve 50px a la izquierda y 140px hacia arriba */
     
 }
 
+.logo-superior-izquierdo {
+    max-width: 130px;
+    height: auto;
+    transform: translate(120px, -195px);/* Mueve 50px a la izquierda y 140px hacia arriba */
+}
+
 .logo-central {
-    max-width: 300px; /* 👈 Más pequeño */
-    transform: translateY(-150px); /* 👈 Subido para que parezca más arriba */
+    max-width: 130px; /* 👈 Más pequeño */
+    transform: translateY(-210px); /* 👈 Subido para que parezca más arriba */
 }
 
 
@@ -45,7 +52,11 @@ body {
     margin-bottom: 30px;
 }
 
-.logo-lateral {
+.logo-lateral-izquierdo {
+    max-height: 80px;
+    width: auto;
+}
+.logo-lateral-derecho {
     max-height: 80px;
     width: auto;
 }
@@ -133,4 +144,22 @@ body {
 .logo-izquierdo,
 .logo-derecho {
     transform: translateY(10px); /* 👈 Bajados para que queden más abajo */
+}
+
+.logos-inferiores {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 60px;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    transform: translateY(-40px);
+}
+
+.logo-inferior-izquierdo,
+.logo-inferior-central,
+.logo-inferior-derecho {
+    max-width: 130px;
+    height: auto;
 }

@@ -7,19 +7,20 @@
     <link rel="stylesheet" href="style/style.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet"/>
 </head>
+
 <body>
     <!-- Logos superiores -->
     <audio id="audioGiro" src="./files/ruleta5seg.mp3" preload="auto"></audio>
 
     <div class="logos-superiores">
-        <img src="./img/Beefeater-01.png" alt="Logo Izquierdo" class="logo-superior"/>
-        <img src="./img/Absolut_Logotype_OriginalBlue.png" alt="Logo Central" class="logo-superior logo-central"/>
-        <img src="./img/Brighton-01.png" alt="Logo Derecho" class="logo-superior"/>
+        <img src="./img/Absolut_Logotype_OriginalBlue.png" alt="Logo Izquierdo" class="logo-superior-izquierdo"/>
+        <img src="./img/Beefeater-01.png" alt="Logo Central" class="logo-superior logo-central"/>
+        <img src="./img/Brighton-01.png" alt="Logo Derecho" class="logo-superior-derecho"/>
     </div>
 
     <!-- Contenedor central con ruleta e imágenes laterales -->
     <div class="ruleta-wrapper">
-        <img src="./img/CR-Wordmark-stack-black.png" alt="Imagen Izquierda" class="logo-lateral izquierdo"/>
+        
         
         <div class="ruleta-container">
             <canvas id="ruleta" class="ruleta"></canvas>
@@ -27,7 +28,12 @@
             <button id="girarBtn" onclick="girarRuleta()">Girar</button>
         </div>
 
-        <img src="./img/BAL_CoreLogo_Pos_RGB.png" alt="Imagen Derecha" class="logo-lateral derecho"/>
+        
+    </div>
+
+    <div class="logos-inferiores">
+        <img src="./img/BAL_CoreLogo_Pos_RGB.png" alt="Logo Inferior Izquierdo" class="logo-inferior-izquierdo"/>
+        <img src="./img/1500_mumm-1.png" alt="Logo Inferior Derecho" class="logo-inferior-derecho"/>
     </div>
 
     <div id="resultado" class="resultado">
@@ -35,5 +41,7 @@
     </div>
 
     <script src="./js/ruleta.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 </body>
 </html>

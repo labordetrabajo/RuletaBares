@@ -6,13 +6,13 @@
         canvas.height = 480;
         // se utiliza \u2006\u2006 para hacer espacios entre las letras
         const premios = [
-            { nombre: "Segui participando" }, // índice 0  segui participando
-            { nombre: "Te Pasaste" },            // índice 1 
+            { nombre: "Segui Participando" }, // índice 0  segui participando
+            { nombre: "Te\u2006\u2006Pasaste" },            // índice 1 
             { nombre: "Regalo Sorpresa" },            // índice 2
             { nombre: "Casi\u2006\u2006Casi" },        // índice 3  cuarto continente
             { nombre: "Una\u2006\u2006Vuelta Mas" },        // índice 4
-            { nombre: "En\u2006\u2006La\u2006\u2006Pera Consumición S/C" },             // índice 5
-            { nombre: "A\u2006\u2006Bailar\u2006\u2006All The\u2006\u2006Night " }         // índice 6
+            { nombre: "En\u2006\u2006La\u2006\u2006Pera Consumición 2x1" },             // índice 5
+            { nombre: "A\u2006\u2006Bailar" }         // índice 6
         ];
         const colores = ["#2C3E50", "#E74C3C", "#F39C12", "#0e1a49", "#1ABC9C", "#9B59B6", "#E91E63"];
 
@@ -73,29 +73,42 @@
             if (animacionEnCurso) return;  // Previene que se ejecute varias veces
             animacionEnCurso = true;
             document.getElementById("audioGiro").play();
-
         
             girarBtn.disabled = true; // Deshabilitar el botón mientras gira
-            
-            const probabilidadSegui = 0.7; // 70% de probabilidad de "Seguí participando"
-            const probabilidadCuartoContinente = 0.3; // 30% de probabilidad de "Cuarto Continente"
+        
+            // Probabilidades actualizadas
+            const probabilidades = [
+                { premio: "Una\u2006\u2006Vuelta Mas", probabilidad: 0.19 },   // 19% de probabilidad
+                { premio: "Casi\u2006\u2006Casi", probabilidad: 0.18 },        // 18%
+                { premio: "Regalo Sorpresa", probabilidad: 0.04 },  // 4%
+                { premio: "Te\u2006\u2006Pasaste", probabilidad: 0.18 },       // 18%
+                { premio: "Segui Participando", probabilidad: 0.18 }, // 18%
+                { premio: "A\u2006\u2006Bailar", probabilidad: 0.19 },         // 19%
+                { premio: "En\u2006\u2006La\u2006\u2006Pera Consumición 2x1", probabilidad: 0.04 }    // 4%
+            ];
+        
+            // Calcular el índice del premio basado en las probabilidades
+            let totalProbabilidad = 0;
+            let probabilidadAleatoria = Math.random();
+        
+            let indicePremioSeleccionado = 0;
+            for (let i = 0; i < probabilidades.length; i++) {
+                totalProbabilidad += probabilidades[i].probabilidad;
+                if (probabilidadAleatoria <= totalProbabilidad) {
+                    indicePremioSeleccionado = i;
+                    break;
+                }
+            }
+        
+            // Usamos el índice seleccionado para determinar el premio y el ángulo
+            const premioSeleccionado = premios[indicePremioSeleccionado].nombre;
+            const anguloSector = 360 / numSectores;
+            const anguloCentroSeleccionado = anguloSector * indicePremioSeleccionado + anguloSector / 2;
             const girosCompletos = 5; // Número de giros completos antes de detenerse
             const rotacionBase = 360 * girosCompletos; // Rotación base (múltiples giros completos)
         
-            let anguloFinal;
-            let numeroAleatorio = Math.random();
-        
-            if (numeroAleatorio < probabilidadSegui) {
-                const indiceSeguiParticipando = 0; // "Seguí participando" es el primer sector
-                const anguloSector = 360 / numSectores;
-                const anguloCentroSegui = anguloSector * indiceSeguiParticipando + anguloSector / 2;
-                anguloFinal = rotacionBase + (360 - anguloCentroSegui);
-            } else {
-                const indiceCuartoContinente = 3; // "Cuarto Continente" es el cuarto sector
-                const anguloSector = 360 / numSectores;
-                const anguloCentroCuarto = anguloSector * indiceCuartoContinente + anguloSector / 2;
-                anguloFinal = rotacionBase + (360 - anguloCentroCuarto);
-            }
+            // Cálculo del ángulo final
+            const anguloFinal = rotacionBase + (360 - anguloCentroSeleccionado);
         
             // Aplicamos la rotación
             anguloActual = anguloFinal;
@@ -108,11 +121,11 @@
             setTimeout(() => {
                 // Cálculo del premio final
                 const anguloPremio = (360 - (anguloActual % 360)) % 360;
-                const indicePremio = Math.floor(anguloPremio / (360 / numSectores));
-                const premioGanador = premios[indicePremio].nombre;
+                const indicePremioFinal = Math.floor(anguloPremio / (360 / numSectores));
+                const premioGanador = premios[indicePremioFinal].nombre;
         
                 // Mostrar el premio final después de la animación
-                document.getElementById("resultado").innerText = `¡ ${premioGanador} !`;
+                mostrarResultado(premioGanador);
         
                 // Reseteamos la transformación para permitir nuevos giros
                 setTimeout(() => {
@@ -120,15 +133,14 @@
                     canvas.style.transform = `rotate(${anguloActual % 360}deg)`;
                     girarBtn.disabled = false;
                     animacionEnCurso = false; // Vuelve a habilitar la animación
-                    
-                       // 👉 Acá podés agregar estas líneas para detener el audio
+        
+                    // Detener el audio
                     document.getElementById("audioGiro").pause();
                     document.getElementById("audioGiro").currentTime = 0;
-                    
-                    
                 }, 100);
             }, 3000);
         }
+        
         
         function mostrarPremiosAnimados() {
             const resultadoDiv = document.getElementById("resultado");
@@ -145,12 +157,83 @@
                 clearInterval(intervalo);
             }, 2500); // La animación dura 2.5 segundos
         }
+
+        function animacionPorPremio(premio) {
+            switch (premio) {
+                case "Regalo Sorpresa":
+                    lanzarConfeti("sorpresa");
+                    break;
+                case "En\u2006\u2006La\u2006\u2006Pera Consumición 2x1":
+                    lanzarConfeti("fiesta");
+                    break;
+                case "Una\u2006\u2006Vuelta Mas":
+                    lanzarConfeti("pera");
+                    break;
+                case "A\u2006\u2006Bailar":
+                    lanzarConfeti("pera");
+                    break;
+                case "Te\u2006\u2006Pasaste":
+                    lanzarConfeti("poquito");
+                    break;
+                case "Segui Participando":
+                    lanzarConfeti("poquito");
+                    break;
+                case "Casi\u2006\u2006Casi":
+                    lanzarConfeti("poquito");
+                    break;
+                default:
+                    lanzarConfeti("default");
+                    break;
+            }
+        }
+        
+
+        function mostrarResultado(premio) {
+            const resultadoEl = document.getElementById("resultado");
+            resultadoEl.innerText = `🎉 ¡ ${premio} ! 🎉`;
+        
+            resultadoEl.classList.remove("animacion-ganador");
+            void resultadoEl.offsetWidth;
+            resultadoEl.classList.add("animacion-ganador");
+        
+            // 🎊 Lanzamos animación personalizada según premio
+            animacionPorPremio(premio);
+        }
+        
+        
+function lanzarConfeti(tipo = "default") {
+    const duration = 3000;
+    const animationEnd = Date.now() + duration;
+
+    const configs = {
+        sorpresa: { startVelocity: 45, spread: 360, ticks: 80, colors: ['#FFD700', '#FF69B4', '#00FFFF'] },
+        pera: { startVelocity: 20, spread: 180, ticks: 50, colors: ['#9B59B6'] },
+        fiesta: { startVelocity: 60, spread: 360, ticks: 90, colors: ['#FF0000', '#00FF00', '#0000FF'] },
+        poquito: { startVelocity: 0, spread: 0, ticks: 0, colors: ['#AAAAAA'] },
+        default: { startVelocity: 30, spread: 360, ticks: 60 }
+    };
+
+    const confettiConfig = Object.assign({ zIndex: 999 }, configs[tipo]);
+
+    const interval = setInterval(() => {
+        const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return clearInterval(interval);
+
+        const particleCount = 40 * (timeLeft / duration);
+        confetti(Object.assign({}, confettiConfig, {
+            particleCount,
+            origin: { x: Math.random() * 0.5, y: Math.random() - 0.2 }
+        }));
+        confetti(Object.assign({}, confettiConfig, {
+            particleCount,
+            origin: { x: 1 - Math.random() * 0.5, y: Math.random() - 0.2 }
+        }));
+    }, 250);
+}
+
         
         
 
         dibujarRuleta();
 
-        window.addEventListener("load", () => {
-            canvas.style.transition = "transform 0s";
-            canvas.style.transform = "rotate(0.1deg)";
-        });
+     
